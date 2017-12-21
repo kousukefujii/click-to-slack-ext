@@ -8,7 +8,11 @@
   };
   syncGet();
 
+  // 履歴を追加
   const putHistory = (url, title) => {
+    // 保存する履歴の数
+    const historyItems = 200;
+
     if (!_.isArray(settings.history)) {
       settings.history = [];
     }
@@ -19,12 +23,45 @@
       channel: settings.channel,
       timestamp: (Date.now() / 1000)
     });
+
+    while (settings.history.length > historyItems) {
+      settings.history.shift();
+    }
+
     chrome.storage.sync.set(settings);
   };
 
+  /**
+   * 最近の履歴にurlが含まれているかどうかを返す
+   */
+  const currentHistoryIncludeUrl = (url) => {
+    const threshold = 24 * 60 * 60;
+    const now = Date.now() / 1000;
+    let items = _.filter(settings.history, (h) => {
+      // タイムスタンプがしきい値秒数以内だったらtrue
+      if (h.url != url) {
+        return false;
+      }
+
+      return (now - h.timestamp) < threshold;
+    });
+
+    return !!items.length;
+  };
+
+  /**
+   * アクティブなタブのタイトルとURLを
+   * Slackに流す
+   */
   chrome.tabs.getSelected(null, (tab) => {
     const title = document.querySelector('.js-tab-title');
     const url = document.querySelector('.js-tab-url');
+
+    const dup = currentHistoryIncludeUrl(tab.url);
+    if (dup) {
+      $('.js-post-withhold').show();
+      return;
+    }
 
     title.innerHTML=tab.title;
     url.innerHTML=tab.url;
@@ -40,7 +77,11 @@
     $.post(
       'https://slack.com/api/chat.postMessage',
       data
-    ).done(() => {
+    ).done((res) => {
+      if (!res.ok) {
+        $('.js-post-error').show();
+        return;
+      }
       putHistory(tab.url, tab.title);
     });
   });

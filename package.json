@@ -1,5 +1,5 @@
 {
-  "name": "clock-to-share",
+  "name": "click-to-share",
   "private": true,
   "engines": {
     "node": ">=0.8.0"
