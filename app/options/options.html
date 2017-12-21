@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>オプション</title>
+  </head>
+  <body>
+    <h1>オプションページ。</h1>
+
+    <div class="container">
+      <h2>設定</h2>
+      <form class="js-option-form" action="">
+        <div class="form-group">
+          <label for="legacy-token">レガシートークン</label>
+          <input id="legacy-token" type="password" name="token" required>
+          <p>
+            レガシートークンの生成方法についてはSlackのドキュメントを参照してください。
+            <a href="https://get.slack.help/hc/ja/articles/215770388-API-%E3%83%88%E3%83%BC%E3%82%AF%E3%83%B3%E3%81%AE%E7%94%9F%E6%88%90%E3%81%A8%E5%86%8D%E7%94%9F%E6%88%90">API トークンの生成と再生成</a>
+          </p>
+        </div>
+        
+        <div class="form-group">
+          <label for="channel">チャンネル</label>
+          <input id="channel" type="text" name="channel">('#'は不要です)
+        </div>
+
+        <p>
+          <input type="submit" value="保存">
+        </p>
+      </form>
+    </div>
+
+    <div class="container">
+      <h2>履歴</h2>
+      <p>大体200件くらい保存してます</p>
+
+      <ul class="js-history-container">
+      </ul>
+    </div>
+
+    <script id="history-template" type="text/x-template">
+      <li>
+        <div class="hitory-item">
+          <p><a href="<%- h.url %>" target="_blank"><%- h.title %></a></p>
+          <p>
+            channel: <%- h.channel %>
+            <time>date: <%- h.date %></time>
+          </p>
+        </div>
+      </li>
+    </script>
+    <script src="../scripts/vendor/bundle.js"></script>
+    <script src="../scripts/options.js"></script>
+  </body>
+</html>
