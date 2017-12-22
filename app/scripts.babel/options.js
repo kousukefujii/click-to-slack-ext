@@ -33,7 +33,7 @@
     const data = $(e.target).serializeArray();
     const settings = {};
     data.forEach((i) => {
-      settings[i.name] = i.value;
+      settings[i.name] = i.value.trim();
     });
     chrome.storage.sync.set(settings);
   });
