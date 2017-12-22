@@ -83,6 +83,7 @@
         return;
       }
       putHistory(tab.url, tab.title);
+      $('.js-result').text(settings.channel + 'に共有しました').show();
     });
   });
 })();
