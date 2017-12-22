@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "クリックしたらURLをSlackに送る",
+    "message": "URLをSlackに送る",
     "description": "1クリックで予め指定したチャンネルにURLを送ります"
   },
   "appDescription": {
-    "message": "クリックしたらURLをSlackに送る",
+    "message": "1クリックで予め指定したチャンネルにURLを送ります。それだけです。",
     "description": "1クリックで予め指定したチャンネルにURLを送ります"
   }
 }
