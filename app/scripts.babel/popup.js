@@ -11,20 +11,27 @@
   // 履歴を追加
   const putHistory = (url, title) => {
     // 保存する履歴の数
-    const historyItems = 200;
+    const dataQuota = 8192;
 
     if (!_.isArray(settings.history)) {
       settings.history = [];
     }
 
-    settings.history.push({
+    const data = {
       url: url,
       title: title,
       channel: settings.channel,
       timestamp: (Date.now() / 1000)
-    });
+    };
 
-    while (settings.history.length > historyItems) {
+    settings.history.push(data);
+
+    const getDatasize = () => {
+      const str = JSON.stringify(settings.history);
+      return (new Blob([str], {type: 'text/plain'})).size;
+    };
+
+    while (getDatasize() > dataQuota) {
       settings.history.shift();
     }
 
